@@ -127,7 +127,7 @@ gulp.task('css', function() {
         }),
         autoprefixer
     ];
-    return gulp.src(watch.css)
+    return gulp.src('./src/css/styles.css')
 
     .pipe(sourcemaps.init())
         .pipe(postcss(processors))
