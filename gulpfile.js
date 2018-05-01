@@ -16,8 +16,6 @@ nano = require('gulp-cssnano');
 notify = require('gulp-notify');
 stylelint = require('stylelint');
 browserSync = require('browser-sync');
-inlinesource = require('gulp-inline-source');
-uncss = require('gulp-uncss');
 webp = require('gulp-webp');
 // responsive = require('gulp-responsive');
 
@@ -52,7 +50,7 @@ gulp.task("browserSync", function() {
     browserSync({
         server: {
             baseDir: "./",
-            reloadDelay: 2000
+            reloadDelay: 200
         }
     })
 });
@@ -173,28 +171,6 @@ gulp.task('images', function() {
         .pipe(gulp.dest(paths.buildImages));
 });
 
-
-gulp.task('inline', function() {
-    return gulp.src('./*.html')
-        .pipe(inlinesource())
-        .pipe(gulp.dest('./inline/'))
-        .pipe(notify({
-            message: 'CSSnano + remove CSS + inline CSS'
-        }));
-});
-
-gulp.task('removecss', function() {
-    return gulp.src('./css/styles.css')
-        .pipe(uncss({
-            html: ['./*.html']
-        }))
-        .pipe(nano())
-        .pipe(gulp.dest(paths.buildCss))
-        .pipe(notify({
-            message: 'CSSnano & remove CSS task complete'
-        }));
-});
-
 gulp.task('webp', () =>
     gulp.src('img/*.jpg')
         .pipe(webp())
@@ -247,7 +223,7 @@ gulp.task('default', ["browserSync"], function() {
 */
 
 // Build para un proyecto sin imágenes
-gulp.task('build', ['minify', 'compress', 'removecss', 'inline']);
+gulp.task('build', ['minify', 'compress']);
 
 //Build para un proyecto con imágenes
-gulp.task('buildimg', ['minify', 'compress', 'removecss', 'inline' , 'imgrwd' , 'webp']);
+gulp.task('buildimg', ['minify', 'compress', 'imgrwd' , 'webp']);
