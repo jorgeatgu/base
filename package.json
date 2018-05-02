@@ -17,9 +17,7 @@
   "pre-commit": "lint-staged",
   "scripts": {
     "server-on": "browser-sync start --server --files '*.css, *.html' --tunnel jorgeatgu",
-    "lint-staged": "lint-staged",
-    "inline:css": "gulp inline",
-    "remove:uncss": "gulp remove"
+    "lint-staged": "lint-staged"
   },
   "license": "MIT",
   "devDependencies": {
@@ -28,13 +26,11 @@
     "gulp-autoprefixer": "^5.0.0",
     "gulp-cssnano": "^2.1.3",
     "gulp-imagemin": "^4.1.0",
-    "gulp-inline-source": "^3.1.0",
     "gulp-newer": "^1.4.0",
     "gulp-notify": "^3.2.0",
     "gulp-postcss": "^7.0.1",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
-    "gulp-uncss": "^1.0.6",
     "gulp-webp": "^3.0.0",
     "lint-staged": "^7.0.5",
     "postcss-custom-properties": "^7.0.0",
