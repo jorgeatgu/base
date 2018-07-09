@@ -7,7 +7,6 @@ selector = require('postcss-custom-selectors')
 customProperties = require("postcss-custom-properties")
 sorting = require('postcss-sorting');
 nested = require('postcss-nested');
-pxtorem = require('postcss-pxtorem');
 reporter = require('postcss-reporter');
 imagemin = require('gulp-imagemin');
 uglify = require('gulp-uglify');
@@ -17,7 +16,7 @@ notify = require('gulp-notify');
 stylelint = require('stylelint');
 browserSync = require('browser-sync');
 webp = require('gulp-webp');
-// responsive = require('gulp-responsive');
+
 
 var paths = {
   js: 'src/js',
@@ -113,13 +112,6 @@ gulp.task('css', function() {
         nested,
         customProperties,
         selector,
-        pxtorem({
-            root_value: 16,
-            unit_precision: 2,
-            prop_white_list: ['font', 'font-size', 'line-height', 'letter-spacing', 'margin', 'padding'],
-            replace: true,
-            media_query: false
-        }),
         sorting({
             "sort-order": "csscomb"
         }),
@@ -177,45 +169,13 @@ gulp.task('webp', () =>
         .pipe(gulp.dest(paths.buildImages))
 );
 
-// gulp.task('imgrwd', function () {
-//   return gulp.src('src/img/*.{png,jpg}')
-//     .pipe(responsive({
-//       '*.png': [{
-//         width: 300,
-//         rename: {
-//           suffix: '-300px',
-//           extname: '.jpg',
-//         },
-//         format: 'jpeg',
-//       }, {
-//         width: 600,
-//         rename: {
-//           suffix: '-600px',
-//           extname: '.jpg',
-//         },
-//       }, {
-//         width: 1200,
-//         rename: {
-//           suffix: '-1200px',
-//           extname: '.jpg',
-//         }
-//       }],
-//     }, {
-//       quality: 75,
-//       progressive: true,
-//       withMetadata: false,
-//       errorOnEnlargement: false,
-//     }))
-//     .pipe(gulp.dest('img'));
-// });
-
 /* Tarea por defecto para compilar CSS y comprimir imagenes */
 gulp.task('default', ["browserSync"], function() {
     //Add interval to watcher!
     gulp.watch(watch.css, { interval: 300 }, ['css']);
     gulp.watch(watch.images, { interval: 300 }, ['images']);
     gulp.watch(watch.js, { interval: 300 }, ['compress']);
-    gulp.watch(["./*.html", "css/*.css", "js/*.js"]).on("change", browserSync.reload);
+    gulp.watch(["./*.html", "css/*.css", "js/*.js", "./*.csv", "./*.json"]).on("change", browserSync.reload);
 });
 
 /* Tarea final para comprimir CSS y JavaScript. Eliminar el CSS sin usar e incluirlo en línea en el HTML
