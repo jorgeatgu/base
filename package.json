@@ -1,7 +1,7 @@
 {
   "name": "base",
-  "version": "2.0.0",
-  "description": "Base para cualquier proyecto de Jorge Aznar, front/designer en Zaragoza ⦉ http://jorgeatgu.com ⦊",
+  "version": "3.0",
+  "description": "Base for any project of Jorge Aznar, {data/designer} based on Zaragoza ⦉ http://jorgeatgu.com ⦊",
   "main": "gulpfile.js",
   "repository": "jorgeatgu/base",
   "keywords": [
@@ -37,7 +37,6 @@
     "postcss-custom-selectors": "^4.0.1",
     "postcss-import": "^11.1.0",
     "postcss-nested": "^3.0.0",
-    "postcss-pxtorem": "^4.0.1",
     "postcss-reporter": "^5.0.0",
     "postcss-sorting": "^3.1.0",
     "pre-commit": "^1.2.2",
