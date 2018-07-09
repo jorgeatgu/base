@@ -1,6 +1,6 @@
 {
   "name": "base",
-  "version": "3.0",
+  "version": "3.0.0",
   "description": "Base for any project of Jorge Aznar, {data/designer} based on Zaragoza ⦉ http://jorgeatgu.com ⦊",
   "main": "gulpfile.js",
   "repository": "jorgeatgu/base",
