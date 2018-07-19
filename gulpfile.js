@@ -50,7 +50,8 @@ gulp.task("browserSync", function() {
         server: {
             baseDir: "./",
             reloadDelay: 200
-        }
+        },
+        online: true
     })
 });
 
