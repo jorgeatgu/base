@@ -17,11 +17,12 @@
   "pre-commit": "lint-staged",
   "scripts": {
     "server-on": "browser-sync start --server --files '*.css, *.html' --tunnel jorgeatgu",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "build:release": "npm run gulp build && now"
   },
   "license": "MIT",
   "devDependencies": {
-    "browser-sync": "^2.24.5",
+    "browser-sync": "^2.24.6",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-cssnano": "^2.1.3",
@@ -38,7 +39,7 @@
     "postcss-import": "^11.1.0",
     "postcss-nested": "^3.0.0",
     "postcss-reporter": "^5.0.0",
-    "postcss-sorting": "^3.1.0",
+    "postcss-sorting": "^4.0.0",
     "pre-commit": "^1.2.2",
     "stylelint": "^9.3.0"
   }
