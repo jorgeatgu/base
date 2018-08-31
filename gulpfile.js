@@ -176,7 +176,7 @@ gulp.task('default', ["browserSync"], function() {
     gulp.watch(watch.css, { interval: 300 }, ['css']);
     gulp.watch(watch.images, { interval: 300 }, ['images']);
     gulp.watch(watch.js, { interval: 300 }, ['compress']);
-    gulp.watch(["./*.html", "css/*.css", "js/*.js", "./*.csv", "./*.json"]).on("change", browserSync.reload);
+    gulp.watch(["*.html", "css/*.css", "js/*.js", "./*.csv", "./*.json"]).on("change", browserSync.reload);
 });
 
 // Build para un proyecto sin imágenes
