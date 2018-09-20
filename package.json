@@ -31,7 +31,6 @@
     "gulp-notify": "^3.2.0",
     "gulp-postcss": "^7.0.1",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-webp": "^3.0.0",
     "lint-staged": "^7.2.0",
     "postcss-custom-properties": "^7.0.0",
     "postcss-custom-selectors": "^4.0.1",
