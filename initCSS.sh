@@ -18,8 +18,6 @@ function initCSS() {
         mkdir css img js &&
         cd css &&
         curl -O "https://raw.githubusercontent.com/jorgeatgu/base/master/{_variables.css,styles.css}" &&
-        curl -O https://raw.githubusercontent.com/necolas/normalize.css/master/normalize.css &&
-        mv normalize.css _reset.css &&
         cd ../js &&
         touch index.js &&
         cd .. &&
