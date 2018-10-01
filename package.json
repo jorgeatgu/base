@@ -20,6 +20,7 @@
     "lint-staged": "lint-staged",
     "build:release": "gulp build"
   },
+  "browserslist": "last 2 versions",
   "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.24.6",

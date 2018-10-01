@@ -93,9 +93,7 @@ function errorAlertPost(error) {
 
 gulp.task('css', function() {
     var processors = [
-        postcssNormalize({
-            browsers: 'last 2 versions'
-        }),
+
         atImport({
             plugins: [stylelint]
         }),
@@ -109,7 +107,11 @@ gulp.task('css', function() {
         sorting({
             "sort-order": "csscomb"
         }),
-        autoprefixer
+        autoprefixer,
+        postcssNormalize({
+            browsers: 'last 2 versions'
+            forceImport: true
+        }),
     ];
     return gulp.src('./src/css/styles.css')
 
