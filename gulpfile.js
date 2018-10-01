@@ -14,6 +14,7 @@ nano = require('gulp-cssnano');
 notify = require('gulp-notify');
 stylelint = require('stylelint');
 browserSync = require('browser-sync');
+terser = require('gulp-terser');
 
 
 var paths = {
@@ -152,11 +153,19 @@ gulp.task('images', function() {
         .pipe(gulp.dest(paths.buildImages));
 });
 
+gulp.task('compress', function() {
+    return gulp.src(paths.js)
+        .pipe(newer(paths.js))
+        .pipe(imagemin())
+        .pipe(gulp.dest(paths.buildJs));
+});
+
 /* Tarea por defecto para compilar CSS y comprimir imagenes */
 gulp.task('default', ["browserSync"], function() {
     //Add interval to watcher!
     gulp.watch(watch.css, { interval: 300 }, ['css']);
     gulp.watch(watch.images, { interval: 300 }, ['images']);
+    gulp.watch(watch.js, { interval: 300 }, ['compress']);
     gulp.watch(["*.html", "css/*.css", "js/*.js", "./*.csv", "./*.json"]).on("change", browserSync.reload);
 });
 
