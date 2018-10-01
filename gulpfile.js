@@ -109,7 +109,7 @@ gulp.task('css', function() {
         }),
         autoprefixer,
         postcssNormalize({
-            browsers: 'last 2 versions'
+            browsers: 'last 2 versions',
             forceImport: true
         }),
     ];
