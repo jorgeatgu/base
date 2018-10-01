@@ -18,7 +18,7 @@
   "scripts": {
     "server-on": "browser-sync start --server --files '*.css, *.html' --tunnel jorgeatgu",
     "lint-staged": "lint-staged",
-    "build:release": "npm run gulp build && now"
+    "build:release": "gulp build"
   },
   "license": "MIT",
   "devDependencies": {
@@ -37,6 +37,7 @@
     "postcss-custom-selectors": "^4.0.1",
     "postcss-import": "^11.1.0",
     "postcss-nested": "^3.0.0",
+    "postcss-normalize": "^7.0.1",
     "postcss-reporter": "^5.0.0",
     "postcss-sorting": "^4.0.0",
     "pre-commit": "^1.2.2",
