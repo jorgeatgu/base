@@ -163,7 +163,7 @@ gulp.task('images', function() {
 gulp.task('compress', function() {
     return gulp.src(paths.js)
         .pipe(newer(paths.js))
-        .pipe(imagemin())
+        .pipe(terser())
         .pipe(gulp.dest(paths.buildJs));
 });
 
