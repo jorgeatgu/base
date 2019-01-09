@@ -161,10 +161,13 @@ gulp.task('images', function() {
 
 /* Comprimiendo JavaScript */
 gulp.task('compress', function() {
-    return gulp.src(paths.js)
-        .pipe(newer(paths.js))
-        .pipe(imagemin())
-        .pipe(gulp.dest(paths.buildJs));
+   return gulp.src(watch.js)
+     .pipe(terser())
+     .on("error", errorAlertJS)
+     .pipe(gulp.dest(paths.buildJs))
+     .pipe(notify({
+         message: 'JavaScript complete'
+     }))
 });
 
 /* Tarea por defecto para compilar CSS y comprimir imagenes */
@@ -175,5 +178,5 @@ gulp.task('default', ["browserSync"], function() {
     gulp.watch(["*.html", "css/*.css", "js/*.js", "./*.csv", "./*.json"]).on("change", browserSync.reload);
 });
 
-// Build para un proyecto sin imágenes
+// Build minify CSS/JS
 gulp.task('build', ['minify', 'compress']);
