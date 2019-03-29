@@ -15,6 +15,7 @@ const notify = require('gulp-notify');
 const stylelint = require('stylelint');
 const browserSync = require('browser-sync');
 const terser = require('gulp-terser');
+const babel = require('gulp-babel');
 const postcssNormalize = require('postcss-normalize');
 
 var paths = {
@@ -43,6 +44,24 @@ gulp.task('browserSync', function() {
         online: true
     });
 });
+
+gulp.task('babel', () =>
+    gulp
+        .src(watch.js)
+        .pipe(newer(paths.js))
+        .pipe(
+            babel({
+                presets: ['@babel/preset-env']
+            })
+        )
+        .on('error', errorAlertJS)
+        .pipe(gulp.dest(paths.buildJs))
+        .pipe(
+            notify({
+                message: 'JavaScript complete'
+            })
+        )
+);
 
 /* Notificando errores de JavaScript */
 function errorAlertJS(error) {
