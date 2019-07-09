@@ -1,4 +1,4 @@
-const gulp = require('gulp');
+const { src, dest, series, parallel, watch } = require('gulp');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
@@ -9,16 +9,15 @@ const sorting = require('postcss-sorting');
 const nested = require('postcss-nested');
 const reporter = require('postcss-reporter');
 const imagemin = require('gulp-imagemin');
-const newer = require('gulp-newer');
 const nano = require('gulp-cssnano');
 const notify = require('gulp-notify');
 const stylelint = require('stylelint');
-const browserSync = require('browser-sync');
+const browsersync = require('browser-sync');
 const terser = require('gulp-terser');
 const babel = require('gulp-babel');
 const postcssNormalize = require('postcss-normalize');
 
-var paths = {
+const paths = {
     js: 'src/js',
     css: 'src/css',
     images: 'src/img/*',
@@ -27,7 +26,7 @@ var paths = {
     buildImages: 'img/'
 };
 
-var watch = {
+const watchpaths = {
     js: [paths.js + '/**/*.js'],
     css: [paths.css + '/**/*.css'],
     minifycss: [paths.buildCss + '/**/*.css'],
@@ -35,71 +34,63 @@ var watch = {
     html: ['/*.html']
 };
 
-gulp.task('browserSync', function() {
-    browserSync({
+// BrowserSync
+function browserSync(done) {
+    browsersync.init({
         server: {
             baseDir: './',
             reloadDelay: 200
         },
+        open: 'local',
         online: true
     });
-});
+    done();
+}
 
-gulp.task('babel', () =>
-    gulp
-        .src(watch.js)
-        .pipe(newer(paths.js))
+// BrowserSync Reload
+function browserSyncReload(done) {
+    browsersync.reload();
+    done();
+}
+
+function babelJS() {
+    return src(watchpaths.js)
         .pipe(
             babel({
                 presets: ['@babel/preset-env']
             })
         )
         .on('error', errorAlertJS)
-        .pipe(gulp.dest(paths.buildJs))
+        .pipe(dest(paths.buildJs))
         .pipe(
             notify({
                 message: 'JavaScript complete'
             })
-        )
-);
+        );
+}
 
-/* Notificando errores de JavaScript */
 function errorAlertJS(error) {
     notify.onError({
-        title: 'Gulp JavaScript',
-        subtitle: 'Algo esta mal en tu JavaScript!',
+        title: 'JavaScript',
+        subtitle: 'Something is wrong in your JavaScript file',
         sound: 'Basso'
     })(error);
     console.log(error.toString());
     this.emit('end');
 }
 
-/* Notificando errores de CSS */
 function errorAlertPost(error) {
     notify.onError({
-        title: 'Gulp postCSS',
-        subtitle: 'Algo esta mal en tu CSS!',
+        title: 'postCSS',
+        subtitle: 'Something is wrong in your CSS file',
         sound: 'Basso'
     })(error);
     console.log(error.toString());
     this.emit('end');
 }
 
-/* ==========================================================================
-   Lanzando postCSS
-   ========================================================================== */
-
-/*
- * El orden de los plugins debe ser respetado.
- *
- * Antes de que nuestro CSS empiece a ser transformado por los diferentes
- * plugins vamos a 'lintear' nuestro CSS para seguir un orden y concierto.
- *
- *
- */
-
-gulp.task('css', function() {
-    var processors = [
+function css() {
+    const processors = [
         atImport({
             plugins: [stylelint]
         }),
@@ -119,9 +110,7 @@ gulp.task('css', function() {
             forceImport: true
         })
     ];
-    return gulp
-        .src('./src/css/styles.css')
-
+    return src('./src/css/styles.css')
         .pipe(sourcemaps.init())
         .pipe(postcss(processors))
         .on('error', errorAlertPost)
@@ -130,81 +119,77 @@ gulp.task('css', function() {
                 sourceRoot: '/src'
             })
         )
-        .pipe(gulp.dest(paths.buildCss))
-        .pipe(browserSync.stream())
+        .pipe(dest(paths.buildCss))
         .pipe(
             notify({
-                message: 'postCSS complete'
+                message: 'postCSS completed'
             })
         );
-});
+}
 
-/* Lanzando CSSnano para comprimir CSS */
-gulp.task('minify', function() {
-    return (
-        gulp
-            .src(watch.minifycss)
-            // Remove comments false //Z index
-            .pipe(nano())
-            .pipe(gulp.dest(paths.buildCss))
-            .pipe(
-                notify({
-                    message: 'CSSnano task complete'
-                })
-            )
-    );
-});
-
-/* Comprimiendo imagenes */
-gulp.task('imagemin', function() {
-    return gulp
-        .src(paths.images)
+function minify() {
+    return src(watchpaths.minifycss)
+        .pipe(nano())
+        .pipe(dest(paths.buildCss))
         .pipe(
-            imagemin({
-                progressive: true,
-                svgoPlugins: [
-                    {
-                        removeViewBox: false
-                    }
-                ],
-                use: [pngquant()]
+            notify({
+                message: '[CSS] Minify completed'
             })
-        )
-        .pipe(gulp.dest(paths.buildImages));
-});
+        );
+}
 
-gulp.task('images', function() {
-    return gulp
-        .src(paths.images)
-        .pipe(newer(paths.images))
+function imageminify() {
+    return src(paths.images)
         .pipe(imagemin())
-        .pipe(gulp.dest(paths.buildImages));
-});
+        .pipe(dest(paths.buildImages));
+}
 
-/* Comprimiendo JavaScript */
-gulp.task('compress', function() {
-    return gulp
-        .src(watch.js)
+function images() {
+    return src(paths.images)
+        .pipe(imageminify())
+        .pipe(dest(paths.buildImages));
+}
+
+function compress() {
+    return src(watchpaths.js)
         .pipe(terser())
         .on('error', errorAlertJS)
-        .pipe(gulp.dest(paths.buildJs))
+        .pipe(dest(paths.buildJs))
         .pipe(
             notify({
-                message: 'JavaScript complete'
+                message: '[JavaScript] Minify completed'
             })
         );
-});
+}
 
-/* Tarea por defecto para compilar CSS y comprimir imagenes */
-gulp.task('default', ['browserSync'], function() {
-    // Add interval to watcher!
-    gulp.watch(watch.css, { interval: 300 }, ['css']);
-    gulp.watch(watch.images, { interval: 300 }, ['images']);
-    gulp.watch(['*.html', 'css/*.css', 'js/*.js', './*.csv', './*.json']).on(
-        'change',
-        browserSync.reload
+function watchFiles() {
+    watch(watchpaths.css, { interval: 300 }, series(css, browserSyncReload));
+    watch(
+        paths.images,
+        { interval: 300 },
+        series(images, browserSyncReload)
     );
-});
+    watch(watchpaths.js, { interval: 300 }, series(babelJS, browserSyncReload));
+    watch(
+        ['*.html', 'css/*.css', 'js/*.js', './*.csv', './*.json'],
+        browserSyncReload
+    );
+}
 
-// Build minify CSS/JS
-gulp.task('build', ['minify', 'compress']);
+const build = series(minify, compress);
+
+const watching = parallel(watchFiles, browserSync);
+
+module.exports = {
+    watchFiles,
+    browserSync,
+    babelJS,
+    browserSyncReload,
+    css,
+    minify,
+    imageminify,
+    images,
+    compress,
+    watching,
+    build
+};
