@@ -1,0 +1,35 @@
+{
+    "env":
+    {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "standard",
+        "prettier"
+    ],
+    "globals":
+    {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "d3": false,
+        "react": true,
+        "customElements": true,
+        "HTMLImports": true,
+        "Polymer": true,
+        "ShadyDOM": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "rules":
+    {
+        "indent": ["error", 4],
+        "semi": ["error", "always"],
+        "space-before-function-paren": ["error", "never"]
+    }
+}
